@@ -47,7 +47,7 @@ def adv_train(args, model, attacker_class, device, train_loader, optimizer, epoc
                 grad_mp[name] = torch.zeros_like(param_dict[name].data)
 
         defence_parameters = model.parameters()
-        attacker = attacker_class(defence_parameters, lr=1.5 * args.eps / K, eps=args.eps )
+        attacker = attacker_class(defence_parameters, lr=1.5 * args.adv_training_eps / K, eps=args.adv_training_eps )
 
         # move data to device
         data, target = data.to(device), target.to(device)
@@ -132,9 +132,11 @@ def main():
     parser.add_argument('--LP', type=str, default="l2",
                         help='Random Corruption Norm Constrain')
     parser.add_argument('--eps', type=float, default=1e-4,
-                        help='Random Corruption Epsilon')
+                        help='Grad based Corruption Epsilon')
     parser.add_argument('--attack_lr', type=float, default=1e-3,
                         help='Grad based attacker learning rate')
+    parser.add_argument('--adv_training_eps', type=float, default=1e-4,
+                        help='Grad based Corruption Epsilon')
     args = parser.parse_args()
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     torch.manual_seed(args.seed)

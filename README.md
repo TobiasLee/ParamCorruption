@@ -7,7 +7,7 @@ Download and unzip the MNIST dataset with:
 > 
 > tar -xzvf MNIST.tar.gz
 
-## Results
+## Corruption Results
 
 - Random Attack
 Corrupt the model params with noise $\epsilon * \mathcal{N}(0, I) $ ;
@@ -23,4 +23,10 @@ The results before and after attacking under different magnitudes are give below
 | Grad-based Attack, lr=1 |   96.23 / 96.25     |  96.23 / 96.25  | 96.23 /  95.89| 96.23 / 31.52  |  96.23 / 8.92  |
 
 
+## Resistant Training 
+The authors propose a grad-based method to help model gain ability to resists to the possible corruption. The results are listed below:
 
+| Training     |   Grad Attack eps=1e0 (clean acc / attacked acc )  |
+| ------------ | ------------ |
+| Normal Training 8 epochs| 98.14 / 84.08 |
+| Resistant Training, 8 epochs, eps=1e-4 | 98.16 / 91.22  |
