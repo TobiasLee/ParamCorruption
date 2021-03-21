@@ -47,13 +47,13 @@ def adv_train(args, model, attacker_class, device, train_loader, optimizer, epoc
                 grad_mp[name] = torch.zeros_like(param_dict[name].data)
 
         defence_parameters = model.parameters()
-        attacker = attacker_class(defence_parameters)
+        attacker = attacker_class(defence_parameters, lr=1.5 * args.eps / K, eps=args.eps )
 
         # move data to device
         data, target = data.to(device), target.to(device)
         data = data.view(data.size(0), -1)
         output = model(data)
-        nll_loss = F.nll_loss(output, target) / ( K + 1.0)
+        nll_loss = F.nll_loss(output, target) / 4.0 /   ( K + 1.0)
         nll_loss.backward()  # get grad
 
         for name in param_dict:  # save grad of normal loss
@@ -63,16 +63,18 @@ def adv_train(args, model, attacker_class, device, train_loader, optimizer, epoc
         for i in range(K):
             attacker.step()  # attack the model
             model.zero_grad()
-            loss_attacked = F.nll_loss(model(data), target) / (K + 1.0)
+            loss_attacked = F.nll_loss(model(data), target) / 4.0   / (K + 1.0)
             loss_attacked.backward()  # get the grad
             for name in param_dict:
                 grad_mp[name].add_(param_dict[name].grad.data)  # record attacked grad
             loss += loss_attacked.item()
         for name in param_dict:  # copy param back
             param_dict[name].data = param_mp[name].clone().detach()
-            param_dict[name].grad.data = param_mp[name].clone().detach()
-
-        optimizer.step()
+            param_dict[name].grad.data = grad_mp[name].clone().detach()
+        if batch_idx % 4 == 3:
+            optimizer.step()
+            optimizer.zero_grad()
+ 
         if batch_idx % args.log_interval == 0:
             print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                 epoch, batch_idx * len(data), len(train_loader.dataset),
