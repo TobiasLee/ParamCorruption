@@ -1,4 +1,4 @@
-# Parameter Corrpution
+# Parameter Corruption
 Reimplementation of AAAI21 Paper: [Exploring the Vulnerability of Deep Neural Networks:
 A Study of Parameter Corruption](https://arxiv.org/pdf/2006.05620.pdf)
 
@@ -23,7 +23,7 @@ The results before and after attacking under different magnitudes are give below
 | Grad-based Attack, lr=1 |   96.23 / 96.25     |  96.23 / 96.25  | 96.23 /  95.89| 96.23 / 31.52  |  96.23 / 8.92  |
 
 
-## Resistant Training 
+## Resistant Training Results
 The authors propose a grad-based method to help model gain ability to resists to the possible corruption. The results are listed below:
 
 | Training     |   Grad Attack eps=1e0 (clean acc / attacked acc )  |
