@@ -4,7 +4,8 @@ A Study of Parameter Corruption](https://arxiv.org/pdf/2006.05620.pdf)
 
 Download and unzip the MNIST dataset with:
 > wget www.di.ens.fr/~lelarge/MNIST.tar.gz
-tar -xzvf MNIST.tar.gz
+> 
+> tar -xzvf MNIST.tar.gz
 
 ## Random Corruption
 
